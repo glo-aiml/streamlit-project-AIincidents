@@ -244,7 +244,7 @@ risk_weights = {
 }
 
 scatter_df = filtered_df[
-filtered_df["region"] != "Global"
+filtered_df["region"] != "GLOBAL"
 ].copy()
 
 scatter_df["risk_score"] = (
