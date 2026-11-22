@@ -229,26 +229,22 @@ st.subheader("Risk Score by Region")
 
 risk_weights = {
     "critical": 5,
-    "high": 3,
-    "medium": 2,
-    "low": 1,
-    "info": 0
+    "high": 4,
+    "medium": 3,
+    "low": 2,
+    "info": 1
 }
 
 risk_df = filtered_df[
     filtered_df["region"] != "Global"
 ].copy()
 
-risk_df["risk_score"] = (
-    risk_df["severity"]
-    .map(risk_weights)
-)
+risk_df["risk_score"] = risk_df["severity"].astype(str).map(risk_weights)
 
 region_risk = (
     risk_df
-    .groupby("region")["risk_score"]
+    .groupby("region", as_index=False)["risk_score"]
     .sum()
-    .reset_index()
 )
 
 fig = px.bar(
