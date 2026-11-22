@@ -236,50 +236,70 @@ have experienced more incidents overall.
 """)
 
 risk_weights = {
-"critical": 5,
-"high": 4,
-"medium": 3,
-"low": 2,
-"info": 1
+    "critical": 5,
+    "high": 4,
+    "medium": 3,
+    "low": 2,
+    "info": 1
 }
 
-scatter_df = filtered_df[
-filtered_df["region"] != "GLOBAL"
+severity_order = ["critical", "high", "medium", "low", "info"]
+
+chart_df = filtered_df[
+    filtered_df["region"] != "GLOBAL"
 ].copy()
 
-scatter_df["risk_score"] = (
-scatter_df["severity"]
-.astype(str)
-.map(risk_weights)
+chart_df["severity"] = (
+    chart_df["severity"]
+    .astype(str)
+    .str.lower()
 )
 
-region_summary = (
-scatter_df
-.groupby("region")
-.agg(
-incident_count=("region", "size"),
-risk_score=("risk_score", "sum")
-)
-.reset_index()
+chart_df["risk_weight"] = chart_df["severity"].map(risk_weights)
+
+region_order = (
+    chart_df.groupby("region")["risk_weight"]
+    .sum()
+    .sort_values(ascending=True)
+    .index
 )
 
-fig = px.scatter(
-region_summary,
-x="incident_count",
-y="risk_score",
-size="risk_score",
-color="risk_score",
-text="region",
-title="Regional Incident Frequency vs Severity Exposure",
-labels={
-"incident_count": "Incident Count",
-"risk_score": "Severity Exposure Score",
-"region": "Region"
-}
+severity_counts = (
+    chart_df.groupby(["region", "severity"])
+    .size()
+    .reset_index(name="incident_count")
 )
 
-fig.update_traces(
-textposition="top center"
+fig = px.bar(
+    severity_counts,
+    x="incident_count",
+    y="region",
+    color="severity",
+    orientation="h",
+    category_orders={
+        "region": list(region_order),
+        "severity": severity_order
+    },
+    color_discrete_map={
+        "critical": "#7f0000",
+        "high": "#d73027",
+        "medium": "#fc8d59",
+        "low": "#fee08b",
+        "info": "#91bfdb"
+    },
+    labels={
+        "incident_count": "Incident Count",
+        "region": "Region",
+        "severity": "Severity"
+    },
+    title="Regional Incident Volume and Severity Mix"
+)
+
+fig.update_layout(
+    barmode="stack",
+    legend_title_text="Severity",
+    xaxis_title="Incident Count",
+    yaxis_title=None
 )
 
 st.plotly_chart(fig, use_container_width=True)
