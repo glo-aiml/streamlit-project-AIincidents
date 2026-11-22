@@ -197,11 +197,15 @@ with st.expander("Attack Type Glossary"):
     - **Governance Failure**: Policy, oversight, or safety control failures.
     """)
 
-# Region Vulnerability
-st.subheader("Regional Vulnerability")
+# Region Exposure
+st.subheader("AI Agent Incident Exposure by Region")
+
+region_df = filtered_df[
+    filtered_df["region"] != "Global"
+]
 
 region_counts = (
-    filtered_df["region"]
+    region_df["region"]
     .value_counts()
     .reset_index()
 )
@@ -220,7 +224,6 @@ fig = px.bar(
 )
 
 st.plotly_chart(fig, use_container_width=True)
-
 # Risk Score by Region
 st.subheader("Risk Score by Region")
 
@@ -232,7 +235,9 @@ risk_weights = {
     "info": 0
 }
 
-risk_df = filtered_df.copy()
+risk_df = filtered_df[
+    filtered_df["region"] != "Global"
+].copy()
 
 risk_df["risk_score"] = (
     risk_df["severity"]
