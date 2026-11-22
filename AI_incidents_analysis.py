@@ -282,11 +282,7 @@ fig.update_traces(
 textposition="top center"
 )
 
-st.plotly_chart(
-fig,
-use_container_width=True
-)
-How to interpret it
+st.plotly_chart(fig, use_container_width=True)
 
 # Landmark Events
 st.subheader("Landmark Incidents")
