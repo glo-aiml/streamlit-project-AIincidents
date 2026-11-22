@@ -147,7 +147,7 @@ attack_labels = {
     "Indirect Prompt Injection (IPI)": "Indirect Prompt Injection",
     "AI Infrastructure & Cluster Compromise": "Infrastructure Compromise",
     "AI Governance & Policy Failure": "Governance Failure",
-    "AI Weaponization & Malicious Tooling": "Malicious AI Use",
+    "AI Weaponization & Malicious Tooling": "Weaponziation & Malicious AI Use",
     "Credential & Secret Theft": "Credential Theft",
     "Model Context Protocol (MCP) Exploit": "MCP Exploit",
     "Autonomous Rogue Agent Behavior": "Rogue Agent Behavior",
@@ -182,6 +182,20 @@ fig = px.bar(
 )
 
 st.plotly_chart(fig, use_container_width=True)
+
+with st.expander("Attack Type Glossary"):
+    st.markdown("""
+    - **Prompt Injection**: Manipulating an AI system through crafted instructions.
+    - **Indirect Prompt Injection**: Malicious instructions delivered through external content.
+    - **Credential Theft**: Theft of passwords, API keys, or access tokens.
+    - **Data Exfiltration**: Unauthorized extraction of sensitive information.
+    - **MCP Exploit**: Abuse of the Model Context Protocol to access tools or data.
+    - **Sandbox Escape**: Escaping an isolated execution environment.
+    - **Supply Chain Attack**: Compromise through dependencies, plugins, or third-party services.
+    - **Infrastructure Compromise**: Attack against underlying AI platforms, servers, or clusters.
+    - **Rogue Agent Behavior**: Unintended or unauthorized autonomous actions by AI agents.
+    - **Governance Failure**: Policy, oversight, or safety control failures.
+    """)
 
 # Region Vulnerability
 st.subheader("Regional Vulnerability")
