@@ -242,7 +242,7 @@ risk_weights = {
 "low": 2,
 "info": 1
 }
- 
+
 scatter_df = filtered_df[
 filtered_df["region"] != "Global"
 ].copy()
@@ -252,7 +252,7 @@ scatter_df["severity"]
 .astype(str)
 .map(risk_weights)
 )
- 
+
 region_summary = (
 scatter_df
 .groupby("region")
@@ -262,7 +262,7 @@ risk_score=("risk_score", "sum")
 )
 .reset_index()
 )
- 
+
 fig = px.scatter(
 region_summary,
 x="incident_count",
@@ -277,11 +277,11 @@ labels={
 "region": "Region"
 }
 )
- 
+
 fig.update_traces(
 textposition="top center"
 )
- 
+
 st.plotly_chart(
 fig,
 use_container_width=True
