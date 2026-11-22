@@ -227,7 +227,7 @@ st.plotly_chart(fig, use_container_width=True)
 
 # Risk Score by Region
 st.subheader("Incident Frequency vs Severity Exposure")
- 
+
 st.caption("""
 This chart compares how often incidents occur in each region against
 their overall severity exposure. Regions appearing higher on the chart
