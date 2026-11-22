@@ -202,7 +202,7 @@ st.subheader("AI Agent Incident Exposure by Region")
 
 region_df = filtered_df[
     filtered_df["region"] != "Global"
-]
+].copy()
 
 region_counts = (
     region_df["region"]
