@@ -197,35 +197,7 @@ with st.expander("Attack Type Glossary"):
     - **Governance Failure**: Policy, oversight, or safety control failures.
     """)
 
-# Region Exposure
-st.subheader("AI Agent Incident Exposure by Region")
-
-region_df = filtered_df[
-    filtered_df["region"] != "GLOBAL"
-].copy()
-
-region_counts = (
-    region_df["region"]
-    .value_counts()
-    .reset_index()
-)
-
-region_counts.columns = [
-    "Region",
-    "Incidents"
-]
-
-fig = px.bar(
-    region_counts,
-    x="Region",
-    y="Incidents",
-    color="Incidents",
-    title="Incidents by Region"
-)
-
-st.plotly_chart(fig, use_container_width=True)
-
-# Risk Score by Region
+# Frequency and Severity by Region
 st.subheader("Incident Frequency vs Severity Exposure")
 
 st.caption("""
