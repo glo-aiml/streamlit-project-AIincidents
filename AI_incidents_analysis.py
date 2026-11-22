@@ -234,7 +234,7 @@ their overall severity exposure. Regions appearing higher on the chart
 are associated with more severe incidents, while regions farther right
 have experienced more incidents overall.
 """)
- 
+
 risk_weights = {
 "critical": 5,
 "high": 4,
