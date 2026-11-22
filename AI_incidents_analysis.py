@@ -283,9 +283,10 @@ st.caption(
     "Highlights notable incidents that influenced AI security practices, governance discussions, or public understanding of AI-agent risks."
 )
 
-landmarks = filtered_df[
-    filtered_df["is_landmark_event"] == True
-]
+landmarks = filtered_df[filtered_df["is_landmark_event"] == True]
+
+# Reset index to 0, 1, 2, ...
+landmarks = landmarks.reset_index(drop=True)
 
 st.dataframe(
     landmarks[
