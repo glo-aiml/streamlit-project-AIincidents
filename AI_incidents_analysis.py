@@ -246,7 +246,7 @@ risk_weights = {
 scatter_df = filtered_df[
 filtered_df["region"] != "Global"
 ].copy()
- 
+
 scatter_df["risk_score"] = (
 scatter_df["severity"]
 .astype(str)
