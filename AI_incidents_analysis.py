@@ -116,32 +116,6 @@ fig = px.pie(
 
 st.plotly_chart(fig, use_container_width=True)
 
-# Severe vs Non Severe
-st.subheader("Severe vs Non-Severe Incidents")
-
-filtered_df["severity_class"] = filtered_df["severity"].apply(
-    lambda x: "Severe"
-    if x in ["critical", "high"]
-    else "Non-Severe"
-)
-
-severity_class_counts = (
-    filtered_df["severity_class"]
-    .value_counts()
-)
-
-fig = px.bar(
-    x=severity_class_counts.index,
-    y=severity_class_counts.values,
-    labels={
-        "x": "Category",
-        "y": "Incident Count"
-    },
-    title="Severe vs Non-Severe Incidents"
-)
-
-st.plotly_chart(fig, use_container_width=True)
-
 # Trend Analysis
 st.subheader("Incident Trends Over Time")
 
@@ -165,6 +139,25 @@ st.plotly_chart(fig, use_container_width=True)
 # Attack Type Frequency
 st.subheader("Most Common Attack Types")
 
+attack_labels = {
+    "IPI;CRED": "Prompt Injection + Credential Theft",
+    "INFRA;CRED": "Infrastructure Compromise + Credential Theft",
+    "IPI;EXFIL": "Prompt Injection + Data Exfiltration",
+    "SUPPLY;CRED": "Supply Chain Attack + Credential Theft",
+    "Indirect Prompt Injection (IPI)": "Indirect Prompt Injection",
+    "AI Infrastructure & Cluster Compromise": "Infrastructure Compromise",
+    "AI Governance & Policy Failure": "Governance Failure",
+    "AI Weaponization & Malicious Tooling": "Malicious AI Use",
+    "Credential & Secret Theft": "Credential Theft",
+    "Model Context Protocol (MCP) Exploit": "MCP Exploit",
+    "Autonomous Rogue Agent Behavior": "Rogue Agent Behavior",
+    "Benchmark & Evaluation Poisoning": "Evaluation Poisoning",
+    "Sandbox & Environment Escape": "Sandbox Escape",
+    "AI Supply Chain & Dependency Attack": "Supply Chain Attack",
+    "Unclassified AI Incident": "Unclassified Incident"
+}
+
+attack_counts["Attack Type"] = (
 attack_counts = (
     filtered_df["attack_type_name"]
     .value_counts()
@@ -175,6 +168,11 @@ attack_counts.columns = [
     "Attack Type",
     "Count"
 ]
+
+attack_counts["Attack Type"] = (
+    attack_counts["Attack Type"]
+    .replace(attack_labels)
+)
 
 fig = px.bar(
     attack_counts.head(15),
