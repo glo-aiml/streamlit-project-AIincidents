@@ -157,7 +157,6 @@ attack_labels = {
     "Unclassified AI Incident": "Unclassified Incident"
 }
 
-attack_counts["Attack Type"] = (
 attack_counts = (
     filtered_df["attack_type_name"]
     .value_counts()
