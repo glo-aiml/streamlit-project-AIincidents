@@ -226,43 +226,74 @@ fig = px.bar(
 st.plotly_chart(fig, use_container_width=True)
 
 # Risk Score by Region
-st.subheader("Risk Score by Region")
-
+st.subheader("Incident Frequency vs Severity Exposure")
+ 
+st.caption("""
+This chart compares how often incidents occur in each region against
+their overall severity exposure. Regions appearing higher on the chart
+are associated with more severe incidents, while regions farther right
+have experienced more incidents overall.
+""")
+ 
 risk_weights = {
-    "critical": 5,
-    "high": 4,
-    "medium": 3,
-    "low": 2,
-    "info": 1
+"critical": 5,
+"high": 4,
+"medium": 3,
+"low": 2,
+"info": 1
 }
-
-risk_df = filtered_df[
-    filtered_df["region"] != "GLOBAL"
+ 
+scatter_df = filtered_df[
+filtered_df["region"] != "Global"
 ].copy()
-
-risk_df["risk_score"] = risk_df["severity"].astype(str).map(risk_weights)
-
-region_risk = (
-    risk_df
-    .groupby("region", as_index=False)["risk_score"]
-    .sum()
+ 
+scatter_df["risk_score"] = (
+scatter_df["severity"]
+.astype(str)
+.map(risk_weights)
 )
-
-fig = px.bar(
-    region_risk.sort_values(
-        "risk_score",
-        ascending=False
-    ),
-    x="region",
-    y="risk_score",
-    color="risk_score",
-    title="Regional Risk Score"
+ 
+region_summary = (
+scatter_df
+.groupby("region")
+.agg(
+incident_count=("region", "size"),
+risk_score=("risk_score", "sum")
 )
-
-st.plotly_chart(fig, use_container_width=True)
+.reset_index()
+)
+ 
+fig = px.scatter(
+region_summary,
+x="incident_count",
+y="risk_score",
+size="risk_score",
+color="risk_score",
+text="region",
+title="Regional Incident Frequency vs Severity Exposure",
+labels={
+"incident_count": "Incident Count",
+"risk_score": "Severity Exposure Score",
+"region": "Region"
+}
+)
+ 
+fig.update_traces(
+textposition="top center"
+)
+ 
+st.plotly_chart(
+fig,
+use_container_width=True
+)
+How to interpret it
 
 # Landmark Events
 st.subheader("Landmark Incidents")
+
+st.caption(
+    "Highlights notable incidents that influenced AI security practices, governance discussions, or public understanding of AI-agent risks."
+)
 
 landmarks = filtered_df[
     filtered_df["is_landmark_event"] == True
@@ -277,14 +308,5 @@ st.dataframe(
             "region"
         ]
     ],
-    use_container_width=True
-)
-
-# Raw Cleaned Data
-
-st.subheader("Explore Incident Data")
-
-st.dataframe(
-    filtered_df,
     use_container_width=True
 )
