@@ -201,7 +201,7 @@ with st.expander("Attack Type Glossary"):
 st.subheader("AI Agent Incident Exposure by Region")
 
 region_df = filtered_df[
-    filtered_df["region"] != "Global"
+    filtered_df["region"] != "GLOBAL"
 ].copy()
 
 region_counts = (
@@ -224,6 +224,7 @@ fig = px.bar(
 )
 
 st.plotly_chart(fig, use_container_width=True)
+
 # Risk Score by Region
 st.subheader("Risk Score by Region")
 
@@ -236,7 +237,7 @@ risk_weights = {
 }
 
 risk_df = filtered_df[
-    filtered_df["region"] != "Global"
+    filtered_df["region"] != "GLOBAL"
 ].copy()
 
 risk_df["risk_score"] = risk_df["severity"].astype(str).map(risk_weights)
